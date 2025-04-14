@@ -1,0 +1,67 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+
+# My personal ignored files
+# Ignore build artifacts
+/app/build/
+/app/bin/
+/app/gen/
+/app/intermediate/
+/app/injected/
+/app/libs/
+
+# Ignore generated APKs
+*.apk
+*.ap_
+
+# Ignore Android Studio/IDEA files
+.idea/
+*.iml
+
+# Ignore local configuration files
+local.properties
+*.log
+
+# Ignore Gradle files
+.gradle/
+/build/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore generated R.java and other generated sources
+**/R.java
+**/BuildConfig.java
+
+# Ignore metadata or config caches
+.metadata/
+.cache/
+.cxx/
+
+# CodeAssist-specific (if any generated folders are used outside `build`)
+*.code-assist-cache/
+*.code-assist-temp/
