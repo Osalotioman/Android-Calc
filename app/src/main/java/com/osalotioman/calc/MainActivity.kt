@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 
+import androidx.compose.runtime.*
+
 class MainActivity : ComponentActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,7 @@ class MainActivity : ComponentActivity() {
 			fun showToast(message: String) {
         		Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
    		 }
+			var textFieldState by remember {mutableStateOf(TextFieldValue("54"))}
 			// You can think of Modifiers as implementations of the decorators pattern that are used to
 			// modify the composable that its applied to. In the example below, we configure the
 			// Column to occupy the entire available height & width using Modifier.fillMaxSize().
@@ -51,13 +54,13 @@ class MainActivity : ComponentActivity() {
 				horizontalAlignment = Alignment.CenterHorizontally,
 				content = {
 					SimpleButton(
-    					onClick = { showToast("Telepathy") },
+    					onClick = { textFieldState = TextFieldValue("7968+2626") },
     					buttonText = "Calculator"
 					)
 					
 					RightAlignedTextBox(
-       				 value = TextFieldValue(""),
-      				  onValueChange = {}
+       				 value = textFieldState,
+      				  onValueChange = {textFieldState = it}
 				    )
 					ButtonGrid()
 				}
