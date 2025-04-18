@@ -13,7 +13,6 @@ import android.os.Bundle
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.*
@@ -28,64 +27,49 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.*
 
 class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-	
-		// This is an extension function of Activity that sets the @Composable function that's
-		// passed to it as the root view of the activity. This is meant to replace the .xml file
-		// that we would typically set using the setContent(R.id.xml_file) method. The setContent
-		// block defines the activity's layout.
-		setContent {
-			// Column is a composable that places its children in a vertical sequence. You
-			// can think of it similar to a LinearLayout with the vertical orientation. 
-			// In addition we also pass a few modifiers to it.
-			val context = LocalContext.current
-			fun showToast(message: String) {
-        		Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-   		 }
-			var textFieldState by remember {mutableStateOf(TextFieldValue("54"))}
-			// You can think of Modifiers as implementations of the decorators pattern that are used to
-			// modify the composable that its applied to. In the example below, we configure the
-			// Column to occupy the entire available height & width using Modifier.fillMaxSize().
-			Column(
-				modifier = Modifier.fillMaxSize(),
-				verticalArrangement = Arrangement.Center,
-				horizontalAlignment = Alignment.CenterHorizontally,
-				content = {
-					SimpleButton(
-    					onClick = { textFieldState = TextFieldValue("7968+2626") },
-    					buttonText = "Calculator"
-					)
-					
-					RightAlignedTextBox(
-       				 value = textFieldState,
-      				  onValueChange = {textFieldState = it}
-				    )
-					ButtonGrid(
-						textFieldState = textFieldState
-					)
-				}
-			)
-		}
+        setContent {
+            val context = LocalContext.current
+            fun showToast(message: String) {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+
+            val textFieldState = remember { mutableStateOf(TextFieldValue("54")) }
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SimpleButton(
+                    onClick = { textFieldState.value = TextFieldValue("7968+2626") },
+                    buttonText = "Calculator"
+                )
+
+                RightAlignedTextBox(
+                    value = textFieldState.value,
+                    onValueChange = { textFieldState.value = it }
+                )
+
+                ButtonGrid(
+                    textFieldState = textFieldState
+                )
+            }
+        }
     }
 }
 
-// We represent a Composable function by annotating it with the @Composable annotation. Composable
-// functions can only be called from within the scope of other composable functions.
 @Composable
 fun SimpleText(
-	displayText: String,
-	style: TextStyle = TextStyle.Default
+    displayText: String,
+    style: TextStyle = TextStyle.Default
 ) {
-    // We should think of composable functions to be similar to lego blocks - each composable
-    // function is in turn built up of smaller composable functions. Here, the Text() function is
-    // pre-defined by the Compose UI library; you call that function to declare a text element
-    // in your app.
-	Text(
-		text = displayText,
-		style = style
-	)
+    Text(
+        text = displayText,
+        style = style
+    )
 }
 
 @Composable
@@ -107,14 +91,14 @@ fun SimpleButton(
 @Composable
 fun ButtonGrid(
     modifier: Modifier = Modifier,
-	textFieldState: TextFieldValue
+    textFieldState: MutableState<TextFieldValue>
 ) {
-	val items = listOf(
-		"1", "2", "3", "-",
-		"4", "5", "6", "÷",
-		"7", "8", "9", "×",
-		"0", ".", "+", "="
-	)
+    val items = listOf(
+        "1", "2", "3", "-",
+        "4", "5", "6", "÷",
+        "7", "8", "9", "×",
+        "0", ".", "+", "="
+    )
 
     LazyColumn(modifier = modifier) {
         items.chunked(4).forEach { rowItems ->
@@ -125,7 +109,11 @@ fun ButtonGrid(
                 ) {
                     rowItems.forEach { item ->
                         Button(
-                            onClick = { textFieldState = TextFieldValue("7968uhu") },
+                            onClick = {
+                                textFieldState.value = TextFieldValue(
+                                    textFieldState.value.text + item
+                                )
+                            },
                             modifier = Modifier
                                 .padding(4.dp)
                                 .weight(1f)
@@ -142,25 +130,23 @@ fun ButtonGrid(
 @Composable
 fun RightAlignedTextBox(
     modifier: Modifier = Modifier,
-    value: TextFieldValue = TextFieldValue(""),  // The initial value of the TextField
+    value: TextFieldValue = TextFieldValue(""),
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxWidth(0.8f)) {
-        // The TextField with the right-aligned text using padding and alignment
         TextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .align(Alignment.CenterEnd)  // Align the TextField to the right within the Box
-                .padding(16.dp),  // Optional padding around the text field
+                .align(Alignment.CenterEnd)
+                .padding(16.dp),
             textStyle = TextStyle(
                 color = Color.Black,
                 fontWeight = FontWeight.Normal
             ),
-            placeholder = { Text("0") },  // Placeholder text
+            placeholder = { Text("0") },
             singleLine = true,
-			enabled = false
+            enabled = false
         )
     }
 }
-
