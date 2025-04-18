@@ -62,7 +62,9 @@ class MainActivity : ComponentActivity() {
        				 value = textFieldState,
       				  onValueChange = {textFieldState = it}
 				    )
-					ButtonGrid()
+					ButtonGrid(
+						textFieldState = textFieldState
+					)
 				}
 			)
 		}
@@ -104,7 +106,8 @@ fun SimpleButton(
 
 @Composable
 fun ButtonGrid(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+	textFieldState: TextFieldValue
 ) {
 	val items = listOf(
 		"1", "2", "3", "-",
@@ -122,7 +125,7 @@ fun ButtonGrid(
                 ) {
                     rowItems.forEach { item ->
                         Button(
-                            onClick = { /* Handle click event */ },
+                            onClick = { textFieldState = TextFieldValue("7968uhu") },
                             modifier = Modifier
                                 .padding(4.dp)
                                 .weight(1f)
